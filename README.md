@@ -183,8 +183,8 @@ Rollbacks can easily be accomplished for back-end and front-end.
 
 ### Back-end Rollback & Canary Deployment
 Rollbacks & Canary Deployments are easily configured in gcloud app-engine cloud console via the ui in the screenshot below. Simple start and stop the version(s), you would like to run. Each subsequent deployment to gcloud will be displayed as a new version in the ui.   
-![Back-end Hosting](./screenshots/gcloudAppEngineVersion.png)
+![Back-end Hosting](./screenshots/screenshot_here.png)
 
 ### Front-end Rollback
 Front-end rollback are also just as easy. Simply login to firebase, select the project, and select *Hosting*, then click *Rollback* on the version you would like to rollback too.
-![Front-end Hosting](./screenshots/firebaseHostingRollback.png)
+![Front-end Hosting](./screenshots/screenshot_here.png)
