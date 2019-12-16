@@ -1,0 +1,18 @@
+@import "~carbon-components/scss/globals/scss/_theme.scss";
+
+.left-nav-spacer {
+  width: 48px;
+  height: 100vh;
+}
+.top-nav-spacer{
+    height: 48px;
+}
+
+.terminal{
+  height: 100px;
+  background-color: $ui-01;
+}
+
+.bx--header{
+    background-color: red
+}

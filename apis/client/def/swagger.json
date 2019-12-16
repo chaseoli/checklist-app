@@ -1,0 +1,192 @@
+{
+	"basePath": "/",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {},
+	"info": {
+		"title": "project-api",
+		"version": "1.0.0"
+	},
+	"paths": {
+		"/test/msg": {
+			"get": {
+				"operationId": "testMsg",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/util/base64/encode-fb-cred": {
+			"post": {
+				"operationId": "base64EncodeFbCred",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"description": "encode firebase credentials to sanitized base64 string",
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"type": "object"
+						}
+					}
+				]
+			}
+		},
+		"/util/base64/decode-fb-cred": {
+			"post": {
+				"operationId": "base64DecodeFbCred",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "object"
+						}
+					}
+				},
+				"description": "alias for base64/decode-text - can be used to decode firebase credential",
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"type": "object"
+						}
+					}
+				]
+			}
+		},
+		"/util/base64/encode": {
+			"post": {
+				"operationId": "base64Encode",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"description": "encode to base64 string\nobj = json object in body, or text = someLongString",
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"type": "object"
+						}
+					}
+				]
+			}
+		},
+		"/util/base64/decode": {
+			"post": {
+				"operationId": "base64Decode",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "object"
+						}
+					}
+				},
+				"description": "decode to base64 string or obj",
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"type": "object"
+						}
+					}
+				]
+			}
+		},
+		"/util/json/escape": {
+			"post": {
+				"operationId": "escapeJson",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"description": "Creates a JSON escaped string",
+				"security": [],
+				"parameters": [
+					{
+						"description": "a json object",
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"type": "object"
+						}
+					}
+				]
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {
+		"api_key": {
+			"description": "A google cloud api key, used to restrict access and apply quotas",
+			"type": "apiKey",
+			"name": "key",
+			"in": "query"
+		}
+	},
+	"host": "URL_FROM_GCLOUD_APP_ENGINE_HOST.appspot.com",
+	"schemes": [
+		"https"
+	]
+}

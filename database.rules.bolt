@@ -1,0 +1,13 @@
+// Build rules  -> $ firebase-bolt database.rules.bolt
+// Deploy rules -> $ firebase deploy --only database
+
+// https://github.com/firebase/bolt/blob/master/docs/language.md
+
+
+// ENABLE ALL READ & WRITE FOR TESTING PURPOSES
+// {
+//   "rules": {
+//     ".read": "auth.uid != null == true", 
+//     ".write": "auth.uid != null == true"
+//   }
+// }

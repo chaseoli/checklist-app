@@ -1,0 +1,99 @@
+{{{header}}}
+
+# Encrypting environment variables for travis: 
+# https://docs.travis-ci.com/user/environment-variables/#defining-encrypted-variables-in-travisyml
+# https://docs.travis-ci.com/user/encryption-keys/#usage
+# https://docs.travis-ci.com/user/encryption-keys/#detailed-discussion
+
+# Encrypting files for travis: 
+# https://docs.travis-ci.com/user/encrypting-files/
+
+sudo: true
+
+jobs:
+
+  include:
+
+    - stage: Build for Angular (front-end)
+      language: node_js
+      node_js:
+        - "10"      
+
+      dist: trusty
+
+      # https://docs.travis-ci.com/user/chrome
+      addons:
+        chrome: stable
+  
+      # https://docs.travis-ci.com/user/gui-and-headless-browsers/#using-the-chrome-addon-in-the-headless-mode
+      # start your web application and listen on `localhost`
+      before_install:
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        - N | npm install -g @angular/cli
+      
+      install:
+        - npm install
+      
+      script:
+        - ng build --prod # --prod will catch errors with angular bindings to view using codelyzer
+        - ng test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+        - ng e2e -- --protractor-config=e2e/protractor-ci.conf.js
+
+      cache:
+        directories:
+          - node_modules
+      
+    - stage: Build for Client API (back-end, decrypts and downloads secrets)
+      language: node_js
+      node_js:
+        - '10'
+
+      before_install:
+        - {{{decrypt-files}}}
+        - tar xvf secrets.tar # extract files in root
+        # - ls ; cd .credentials ; ls ; cd dev ; ls
+  
+      install:
+        - npm i -g typescript tsoa mocha ts-node # install  global dependencies
+        # NOTE: must install *admin* deps too because client api has admin api as a dependency
+        # see imports at ./apis/client/src/app.spec.ts
+        - cd apis/admin
+        - npm i
+        - cd ../client
+        - npm i
+        
+      script:
+        # - pwd
+        # - ls
+        - tsoa routes
+        - tsoa swagger
+        - tsc -p tsconfig.client-api.dev-build.json
+        - cd ${TRAVIS_BUILD_DIR} # back to root 
+        - sh apis/client/test.sh
+      
+      cache:
+        directories:
+          - node_modules
+
+    - stage: Build for Admin API (back-end, encrypts and uploads secrets)
+      language: node_js
+      node_js:
+        - '10'
+
+      before_install:
+        - {{{decrypt-files}}}
+        - tar xvf secrets.tar
+
+      install:
+        - cd apis/admin
+        - npm i -g typescript tsoa mocha ts-node # install  global dependencies
+        - npm i # install project dependencies
+        
+      script:
+        - tsc -p tsconfig.admin-api.dev-build.json
+        - cd ${TRAVIS_BUILD_DIR} # back to root
+        - sh apis/admin/test.sh 
+      
+      cache:
+        directories:
+          - node_modules

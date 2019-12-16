@@ -1,0 +1,79 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "typescript",
+      "label": "ts-dev-client",
+      "tsconfig": "apis/client/tsconfig.client-api.dev-build.json",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }, "dependsOn":[
+        "tsoa-routes-client",
+        "tsoa-swagger-client"
+      ]
+    },
+    {
+      "label": "tsoa-routes-client",
+      "type": "shell",
+      "command": ["cd apis/client ; tsoa routes"]
+    },
+    {
+      "label": "tsoa-swagger-client",
+      "type": "shell",
+      "command": ["cd apis/client ; tsoa swagger"]
+    },
+    {
+      "type": "typescript",
+      "label": "ts-dev-admin",
+      "tsconfig": "apis/admin/tsconfig.admin-api.dev-build.json",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "typescript",
+      "label": "ts-dev-travis-setup",
+      "tsconfig": "travis-setup/tsconfig.travis.dev-build.json",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "front_end_build_prod",
+      "type": "shell",
+      "command": ["ng build --prod"]
+    },
+    {
+      "label": "front_end_serve",
+      "type": "shell",
+      "command": ["ng serve"]
+    },
+    {
+      "label": "front_end_e2e",
+      "type": "shell",
+      "command": ["ng e2e"]
+    },
+    {
+      "label": "front_end_unit_tests",
+      "type": "shell",
+      "command": ["ng test"]
+    },
+    {
+      "label": "install_all_dependencies",
+      "type": "shell",
+      "command": ["npm i; cd apis/admin ; npm i ; cd ../client ; npm i"]
+    }
+  ]
+}

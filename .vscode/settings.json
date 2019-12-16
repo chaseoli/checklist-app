@@ -1,0 +1,27 @@
+{
+    "editor.minimap.maxColumn": 60,
+    "peacock.affectActivityBar": true,
+    "peacock.affectStatusBar": true,
+    "peacock.affectTitleBar": false,
+    "peacock.favoriteColors": [{
+            "name": "blue-green",
+            "value": "#1f99a1"
+        }
+    ],
+    "editor.maxTokenizationLineLength": 20000,
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#1f99a1",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#094053",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "statusBar.background": "#1f99a1",
+        "statusBarItem.hoverBackground": "#1f99a1",
+        "statusBar.foreground": "#15202b"
+    },
+    "cSpell.words": [
+        "ciphertext",
+        "gcloud",
+        "promisify"
+    ]
+}

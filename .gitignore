@@ -1,0 +1,68 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
+
+# dependencies
+/apis/client/node_modules
+/apis/admin/node_modules
+/apis/travis/node_modules
+/node_modules
+
+# profiling files
+chrome-profiler-events.json
+speed-measure-plugin.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+# .vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+!.vscode/example-env-prod.sh
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Secrets
+apis/admin/secrets.ts
+apis/admin/src/secrets.ts
+apis/admin/.encryption
+.credentials/**/*
+
+# IMPORTANT: Do not include in Github, only secrets.tar.enc
+secrets.tar
+
+# Temp files
+apis/client/spec
+apis/client/lib
+apis/client/build
+apis/admin/spec
+apis/admin/lib
+apis/admin/build
+travis-setup/lib

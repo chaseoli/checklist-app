@@ -1,0 +1,152 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "debug admin api",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "runtimeArgs": [
+        "--nolazy",
+        "--inspect-brk=5858"
+      ],
+      "timeout": 30000,
+      // "stopOnEntry": true,
+      "port": 5858,
+      "sourceMaps": true,
+      "preLaunchTask": "ts-dev-admin",
+      "program": "${workspaceFolder}/apis/admin/src/index.ts",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "outFiles": [
+        "${workspaceRoot}/apis/admin/lib/**/*.js"
+      ],
+      "env": {
+        "build": "dev",
+        "gcloud_project_id": "kms-only",
+        "gcloud_kms_key_ring_name": "dev-anchor-secrets-ring",
+        "gcloud_kms_key_name": "anchor-app-secrets-encrypt-key",
+        "gcloud_kms_location": "global",
+        "gcloud_kms_key_version": "1",
+        "gcloud_bucket_name_secrets": "dev-anchor-bucket-1",
+        // credentials explained: https://github.com/googleapis/google-cloud-node
+        "GOOGLE_APPLICATION_CREDENTIALS": ".credentials/dev/admin-service-account.json"
+      }
+    },
+    {
+      "name": "debug travis-setup",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "runtimeArgs": [
+        "--nolazy",
+        "--inspect-brk=5858"
+      ],
+      "timeout": 30000,
+      // "stopOnEntry": true,
+      "port": 5858,
+      "sourceMaps": true,
+      "preLaunchTask": "ts-dev-travis-setup",
+      "program": "${workspaceFolder}/travis-setup/src/index.ts",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "outFiles": [
+        "${workspaceRoot}/travis-setup/lib/**/*.js"
+      ]
+    },
+    {
+      "name": "debug client api",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "runtimeArgs": [
+        "--nolazy",
+        "--inspect-brk=5858"
+      ],
+      "timeout": 30000,
+      // "stopOnEntry": true,
+      "port": 5858,
+      "sourceMaps": true,
+      "preLaunchTask": "ts-dev-client",
+      "program": "${workspaceFolder}/apis/client/src/app.ts",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "outFiles": [
+        "${workspaceRoot}/apis/client/lib/**/*.js"
+      ],
+      "env": {
+        "build": "dev",
+        "portal_url": "http://localhost:4200",
+        "port": "8080",
+        // helper endpoint to encode fb cred to base 64
+        // e.g.: see helper controller POST : {{root}}/util/base64/encode-fb-cred
+        "firebase_database_url": "https://anchor-b3f39.firebaseio.com/",
+        // "firebase_service_account_base64": "FOR_PROD_AND_CI/CD_ONLY",
+        "GOOGLE_APPLICATION_CREDENTIALS": ".credentials/dev/anchor-firebase-admin.json"
+      }
+    },
+    {
+      // Debug unit tests in TS
+      // Set breakpoints in compiled js at apis/client/*/**.ts
+      // see https://medium.com/@FizzyInTheHall/run-typescript-mocha-tests-in-visual-studio-code-58e62a173575
+      "type": "node",
+      "request": "launch",
+      "name": "test client api", // LOCAL ONLY
+      "program": "${workspaceFolder}/apis/client/node_modules/mocha/bin/_mocha",
+      "args": [
+        "--require",
+        "ts-node/register",
+        "--timeout", "999999",
+        "--colors",
+        "apis/client/src/**/*.spec.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "TS_NODE_PROJECT": "apis/client/tsconfig.client-api.dev-tests.json",
+        "gcloud_project_id": "kms-only",
+        "gcloud_kms_key_ring_name": "dev-anchor-secrets-ring",
+        "gcloud_kms_key_name": "anchor-app-secrets-encrypt-key",
+        "gcloud_kms_location": "global",
+        "gcloud_kms_key_version": "1",
+        "gcloud_bucket_name_secrets": "dev-anchor-bucket-1",
+        "GOOGLE_APPLICATION_CREDENTIALS": ".credentials/dev/client-service-account.json"
+      },
+      "travis": {
+        "path":"apis/client"
+      }
+    },
+    {
+      // Debug unit tests in TS
+      // Set breakpoints in compiled js at apis/client/*/**.ts
+      // see https://medium.com/@FizzyInTheHall/run-typescript-mocha-tests-in-visual-studio-code-58e62a173575
+      "type": "node",
+      "request": "launch",
+      "name": "test admin api", // LOCAL ONLY
+      "program": "${workspaceFolder}/apis/admin/node_modules/mocha/bin/_mocha",
+      "args": [
+        "--require",
+        "ts-node/register",
+        "--timeout", "999999",
+        "--colors",
+        "apis/admin/src/**/*.spec.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "TS_NODE_PROJECT": "apis/admin/tsconfig.admin-api.dev-tests.json",
+        "gcloud_project_id": "kms-only",
+        "gcloud_kms_key_ring_name": "dev-anchor-secrets-ring",
+        "gcloud_kms_key_name": "anchor-app-secrets-encrypt-key",
+        "gcloud_kms_location": "global",
+        "gcloud_kms_key_version": "1",
+        "gcloud_bucket_name_secrets": "dev-anchor-bucket-1",
+        "GOOGLE_APPLICATION_CREDENTIALS": ".credentials/dev/admin-service-account.json"
+      },
+      "travis": {
+        "path":"apis/admin"
+      }
+    }
+  ]
+}
