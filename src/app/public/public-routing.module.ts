@@ -3,11 +3,20 @@ import { Routes, RouterModule } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { DocsComponent } from './docs/docs.component';
+import { PublicComponent } from './public.component';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'docs', component: DocsComponent},
-  {path: '404', component: NotFoundComponent}
+  {
+    path: '',
+    component: PublicComponent,
+    children: [
+      {
+        path: '', component: HomeComponent
+      }
+    ]
+  },
+  { path: 'docs', component: DocsComponent },
+  { path: '404', component: NotFoundComponent }
 ];
 
 @NgModule({

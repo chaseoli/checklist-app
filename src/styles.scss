@@ -20,3 +20,16 @@ $feature-flags: (
 body{
     font-family: 'IBM Plex Mono', monospace;
 }
+
+
+.flex-fill {
+	// Work-around since @HostBinding will "NOT" compile fxLayout directive (eg: @HostBinding('attr.fxLayout') fxlayout = 'row';)
+	// used with host binding (ie: @HostBinding('attr.class') cls = 'flex-fill';) to fill host component (ng-component)
+	// see, https://github.com/angular/flex-layout/issues/76
+	// the following is equivalent to "fxFlex fxLayout="column"
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	flex-direction: column;
+	display: flex;
+	width: 100%;
+}
