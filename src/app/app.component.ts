@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
 
 @Component({
@@ -6,4 +6,8 @@ import { MediaObserver, MediaChange } from '@angular/flex-layout';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {}
+export class AppComponent {
+  
+  @HostBinding('attr.class') cls = 'flex-fill';
+
+}

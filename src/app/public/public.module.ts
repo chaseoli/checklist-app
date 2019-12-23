@@ -5,12 +5,20 @@ import { PublicRoutingModule } from './public-routing.module';
 import { HomeComponent } from './home/home.component';
 import { DocsComponent } from './docs/docs.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { PublicComponent } from './public.component';
+import { CustomCarbonModule } from '../shared/custom-carbon-angular.module';
 
 @NgModule({
-  declarations: [HomeComponent, DocsComponent, NotFoundComponent],
+  declarations: [
+    PublicComponent,
+    HomeComponent, 
+    DocsComponent, 
+    NotFoundComponent
+  ],
   imports: [
     CommonModule,
-    PublicRoutingModule
+    PublicRoutingModule,
+    CustomCarbonModule
   ]
 })
 export class PublicModule { }
