@@ -3,10 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TransferComponent } from './transfer/transfer.component';
 import { PrivateComponent } from './private.component';
+import { AuthResolver } from '../shared/guards/auth.resolver';
+import { UserMetaResolver } from '../shared/guards/user-meta.resolver';
 
 const routes: Routes = [
   {
     path: '', component: PrivateComponent,
+    resolve: [AuthResolver, UserMetaResolver],
     children: [
       { path: '', redirectTo: 'dashboard' },
       { path: 'dashboard', component: DashboardComponent },

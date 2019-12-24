@@ -4,6 +4,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { DocsComponent } from './docs/docs.component';
 import { PublicComponent } from './public.component';
+import { InactiveComponent } from './inactive/inactive.component';
+import { AuthResolver } from '../shared/guards/auth.resolver';
 
 const routes: Routes = [
   {
@@ -11,10 +13,12 @@ const routes: Routes = [
     component: PublicComponent,
     children: [
       {
-        path: '', component: HomeComponent
+        path: '', component: HomeComponent,
+        resolve: [AuthResolver]
       }
     ]
   },
+  { path: 'inactive', component: InactiveComponent },
   { path: 'docs', component: DocsComponent },
   { path: '404', component: NotFoundComponent }
 ];
