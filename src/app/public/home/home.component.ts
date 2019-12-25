@@ -1,4 +1,5 @@
 import { Component, OnInit, HostBinding, NgZone } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { get, isEmpty } from 'lodash';
 import { AuthService } from '../../shared/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,12 +12,23 @@ import { IUserMeta } from '../../shared/models/user.interface'
 })
 export class HomeComponent implements OnInit {
 
+  private showPasswordBlock = false;  
+  private loginForm: FormGroup;
+
   constructor(
     public authService: AuthService,
     private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
     private ngZone: NgZone,
     private router: Router
-  ) { }
+  ) {
+    
+    this.loginForm = this.formBuilder.group({
+      email: '',
+      password: ''
+    });
+
+   }
 
   @HostBinding('attr.class') cls = 'flex-fill';
 
@@ -41,6 +53,13 @@ export class HomeComponent implements OnInit {
 
     }
 
+  }
+
+  onSubmit(customerData) {
+    // Process checkout data here
+    console.warn('Your order has been submitted', customerData);
+
+    this.loginForm.reset();
   }
 
   /**

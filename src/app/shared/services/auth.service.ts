@@ -130,7 +130,7 @@ export class AuthService implements OnDestroy {
      * @returns {Promise<string>}
      * @memberof AuthService
      */
-    async getFirebaseIdToken(institutionId?: string, participantId?: string): Promise<HttpHeaders> {
+    async getFirebaseIdToken(): Promise<HttpHeaders> {
 
         const fid = await this.auth.auth.currentUser.getIdToken(/* forceRefresh */ true);
 
@@ -138,17 +138,6 @@ export class AuthService implements OnDestroy {
         // determine the firebase user making the http request
         let h = new HttpHeaders().set('X-fid', fid);
         h.append('x-fid', fid);
-
-        // institutionId used by participant permissions lookup in back-end
-        if (institutionId) {
-            h = h.set('x-iid', institutionId);
-        }
-
-        if (participantId) {
-            h = h.set('x-pid', participantId);
-        }
-
-        // usage example: this.http.post('api/items/add', body, { headers: h })
 
         return h;
     }

@@ -10,6 +10,7 @@ import { environment } from '../environments/environment';
 import { AuthModule } from './shared/modules/auth.module';
 import { WindowService } from './shared/services/window.service';
 import { DocumentService } from './shared/services/document.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
