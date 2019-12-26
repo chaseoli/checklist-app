@@ -7,11 +7,10 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(  ) {  }
 
   @HostBinding('attr.class') cls = 'flex-fill';
 
-  ngOnInit() {
-  }
+  ngOnInit() {  }
 
 }
