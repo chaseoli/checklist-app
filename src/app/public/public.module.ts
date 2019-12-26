@@ -10,6 +10,7 @@ import { CustomCarbonModule } from '../shared/custom-carbon-angular.module';
 import { InactiveComponent } from './inactive/inactive.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DocsComponent, 
     NotFoundComponent, 
     InactiveComponent, 
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     CommonModule,
