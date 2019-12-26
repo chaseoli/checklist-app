@@ -5,6 +5,11 @@ import { AuthService } from '../../shared/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IUserMeta } from '../../shared/models/user.interface'
 
+interface ILoginForm {
+  email: string
+  password: string
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,8 +17,16 @@ import { IUserMeta } from '../../shared/models/user.interface'
 })
 export class HomeComponent implements OnInit {
 
-  private showPasswordBlock = false;  
-  private loginForm: FormGroup;
+  public showPasswordBlock = false;
+  public loginAttemptInProgress = false;
+  public loginErrorNotification: {
+    type: string
+    title: string
+    message: string
+    showClose: boolean
+  };
+  public loginForm: FormGroup;
+  private rememberMe: boolean;
 
   constructor(
     public authService: AuthService,
@@ -22,59 +35,65 @@ export class HomeComponent implements OnInit {
     private ngZone: NgZone,
     private router: Router
   ) {
-    
+
     this.loginForm = this.formBuilder.group({
       email: '',
       password: ''
     });
 
-   }
+  }
 
   @HostBinding('attr.class') cls = 'flex-fill';
 
   ngOnInit() {
 
-    // NOTE: no need to put this in a route guard or parent component
-    // because this is only called after IBMId login callback is
-    // fired from back-end node.js server.
-
     // check if firebase user exists
-    if (isEmpty(get(this.authService, 'auth.auth.currentUser'))) {
-
-      // user already signed-in so do nothing...
-
-    } else {
-
-      // already logged in so redirect
-      this.authService.getUserMeta(this.authService)
-        .then((userMeta: IUserMeta) => {
-          this.redirect(userMeta);
-        });
-
+    if (!isEmpty(get(this.authService, 'auth.auth.currentUser'))) {
+      this.redirect()
     }
 
   }
 
-  onSubmit(customerData) {
-    // Process checkout data here
-    console.warn('Your order has been submitted', customerData);
-
-    this.loginForm.reset();
+  onRememberMe(event) {
+    console.log('event', event);
+    this.rememberMe = event.checked;
   }
 
-  /**
-   * redirect user to where they have permissions
-   *
-   * @param {IUser} userProfile
-   * @memberof LoginTokenComponent
-   */
-  redirect(userMeta: IUserMeta) {
+  onSubmit(formData: ILoginForm) {
 
-    // redirect to private module and component
-    this.ngZone.run(() => {
-      return this.router.navigate(['/private']);
-    });
+    this.loginAttemptInProgress = true
 
+    console.log('formData', formData);
+
+    this.authService.signInEmailPassword(formData.email, formData.password, this.rememberMe)
+      .then(() => {
+
+        this.redirect();
+
+        // this.loginForm.reset();
+        // this.loginAttemptInProgress = false;
+        // this.showPasswordBlock = false;
+
+      }, (errorMsg) => {
+
+        this.loginAttemptInProgress = false;
+        this.showPasswordBlock = false;
+
+        this.loginErrorNotification = {
+          type: 'error',
+          title: 'Login failed',
+          showClose: false,
+          message: errorMsg
+        };
+
+      })
+
+  }
+
+  
+  redirect() {
+    // user already logged in so redirect      
+    this.router.navigate(['/private']);
   }
 
 }

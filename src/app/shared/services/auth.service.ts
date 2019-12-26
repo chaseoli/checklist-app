@@ -15,7 +15,6 @@ import { auth as fbAuth } from 'firebase';
 // need to look at firebase docs to see if there
 // is a way to just import firebase auth module
 
-
 import { OnDestroy } from '@angular/core';
 import { Subject, timer, Subscription, Observable } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
@@ -77,16 +76,45 @@ export class AuthService implements OnDestroy {
 
     }
 
-    /**
-     * 
-     *
-     * @memberof AuthService
-     */
-    async signIn(): Promise<IUserMeta> {
+    async registerEmailPassword(email: string, password: string) {
 
-        // todo
+        await this.auth.auth.createUserWithEmailAndPassword(email, password).then((userCredential: fbAuth.UserCredential) => {
 
-        return;
+            // suceess
+            console.log('Registered: ', userCredential.user.email);
+            return;
+
+        }, (error) => {
+
+            // failure
+            return Promise.reject(this.humanizeError(error));
+
+        })
+
+    }
+
+    async signInEmailPassword(email: string, password: string, remeberMe: boolean): Promise<any> {
+
+        // https://firebase.google.com/docs/auth/web/auth-state-persistence
+        let persistence = fbAuth.Auth.Persistence.SESSION;
+        if (remeberMe) {
+            persistence = fbAuth.Auth.Persistence.LOCAL;
+        }
+
+        await this.auth.auth.setPersistence(persistence);
+
+        await this.auth.auth.signInWithEmailAndPassword(email, password).then((userCredential: fbAuth.UserCredential) => {
+
+            // suceess
+            console.log('User: ', userCredential.user.email);
+            return;
+
+        }, (error) => {
+
+            // failure
+            return Promise.reject(this.humanizeError(error));
+
+        })
 
     }
 
@@ -303,196 +331,41 @@ export class AuthService implements OnDestroy {
 
     }
 
-    // /**
-    //  * Gets user profile including permissions if the user is logged in
-    //  *
-    //  * @param {AuthService} authService Needed for context in situations where context is lost due to async calls
-    //  * @returns {Promise<IUserProfile>}
-    //  * @memberof AuthService
-    //  */
-    // getUserProfile(authService: AuthService): Promise<IUserProfile> {
-
-    //     return new Promise((resolve, reject) => {
-
-    //         // get user profile if there is a currently logged in user
-    //         if (!isEmpty(get(authService.auth, 'auth.currentUser'))) {
-
-    //             // check if the user already exists on authService
-    //             if (authService.userProfile) {
-    //                 // return current user
-    //                 resolve(authService.userProfile);
-    //             } else {
-
-    //                 // get current user info from database
-    //                 authService.db.database.ref(`/users/${authService.auth.auth.currentUser.uid}`)
-    //                     .once('value', (userData: firebase.database.DataSnapshot) => {
-
-    //                         const userProfile: IUserProfile = userData.val();
-
-    //                         // set current user permissions
-    //                         authService.userProfile = userProfile;
-    //                         console.log('User Profile: ', authService.userProfile);
-
-    //                         resolve(userProfile);
-
-    //                     });
-
-    //             }
-
-    //         } else {
-    //             // no logged in user so reject
-    //             reject(null);
-    //         }
-
-    //     });
-    // }
-
-    /**
-     * checks if the user has "SPECIFIC" super permissions defined
-     *
-     * @returns
-     * @memberof AuthService
-     */
-    hasSpecificSuperPermissions(
-        userProfile: IUserMeta,
-        allowableSuperPermissions: ('admin' | 'manager' | 'viewer' | string)[]
-    ) {
-
-        // for each allowable Super User permissions type
-        for (let i = 0; i < allowableSuperPermissions.length; i++) {
-            // check if allowable permission exists on user profile object
-            if (has(userProfile, 'super_permissions.roles.' + allowableSuperPermissions[i])) {
-                // permissions allowed!
-                return true;
-            }
-        }
-
-        // no permissions found so return false
-        return false;
-    }
-
-    /**
-     * checks if the user has "ANY" super permissions defined
-     *
-     * @memberof AuthService
-     */
-    hasAnySuperPermissions(userProfile: IUserMeta) {
-        // checks if the user has any participant permission roles
-        const isSuper = has(userProfile, 'super_permissions.roles');
-        return isSuper;
-    }
-
-    /**
-     * Check if permissions to view participant related information exists for a user
-     * NOTE: data is secured by firebase security rules, this logic
-     * is only used for evaluating route guard permission.
-     *
-     * returns true or false
-     * if user has permissions for the child route
-     *
-     * @param {IUserMeta} userProfile
-     * @param {string} checkInstitutionId
-     * @param {(('admin' | 'manager' | 'viewer')[])} allowablePermissions
-     * @returns {boolean}
-     * @memberof AuthService
-     */
-    hasParticipantPermissions(
-        userProfile: IUserMeta,
-        checkInstitutionId: string,
-        allowableParticipantPermissions: ('admin' | 'manager' | 'viewer' | string)[]
-    ): boolean {
-
-        // check to make sure passed in route permissions exist
-        if (!allowableParticipantPermissions) {
-            return false;
-        }
-
-        // for each allowable Participant User permissions type
-        for (let i = 0; i < allowableParticipantPermissions.length; i++) {
-            // check if allowable permission exists on user profile object
-            if (has(userProfile, 'participant_permissions.' + checkInstitutionId + '.roles.' + allowableParticipantPermissions[i])) {
-                // permissions allowed!
-                return true;
-            }
-        }
-
-        // restrict permissions, block user from proceeding to route
-        // since user does not have permissions needed
-        return false;
-
-    }
-
-    /**
-     * Helper function for Particpant Permissions.
-     * Checks if user is Manager or Admin of this participant
-     *
-     * @param {string} institutionId
-     * @returns {boolean}
-     * @memberof AuthService
-     */
-    public userIsParticipantManagerOrHigher(institutionId: string): boolean {
-        return this.hasParticipantPermissions(
-            this.userMeta,
-            institutionId,
-            ['manager', 'admin']);
-    }
-
-    /**
-     * Helper function for Particpant Permissions.
-     * Checks if user is Admin of this participant
-     *
-     * @param {string} institutionId
-     * @returns {boolean}
-     * @memberof AuthService
-     */
-    public userIsParticipantAdmin(institutionId: string): boolean {
-        return this.hasParticipantPermissions(
-            this.userMeta,
-            institutionId,
-            ['admin']);
-    }
-
-    /**
-     * Helper function for Super Permissions.
-     * Checks if current user has super permissions.
-     *
-     * @returns {boolean}
-     * @memberof AuthService
-     */
-    public userIsSuperUser(): boolean {
-        return this.hasAnySuperPermissions(
-            this.userMeta
-        );
-    }
-
-    private handleLoginError(err: firebase.FirebaseError, email: string) {
-
-        this.registrationError = ''; // reset registration error
+    private humanizeError(err: firebase.FirebaseError) {
 
         // If there is login error display the error message
         if (err) {
 
             switch (err.code) {
+
+                case 'auth/email-already-in-use':
+                    this.loginError = 'There already exists an account with the given email address.';
+                    break;
+
+                case 'auth/weak-password':
+                    this.loginError = 'The password is too weak.';
+                    break;
+
                 case 'auth/invalid-email':
-                    this.loginError = err.message;
+                    this.loginError = 'Email improperly formatted.';
                     break;
 
                 case 'auth/user-disabled':
-                    this.loginError = 'The user corresponding to the given email has been disabled.';
+                    this.loginError = 'The user corresponding to the given email has been disabled by the system administrator.';
                     break;
 
                 case 'auth/user-not-found':
-                    this.loginError = 'Invalid email or password';
+                    this.loginError = 'Invalid email or password.';
                     break;
 
                 case 'auth/wrong-password':
-                    this.loginError = 'Invalid email or password';
+                    this.loginError = 'Invalid email or password.';
                     break;
 
                 case 'auth/internal-error':
                     // this typically fires when the user redirects back to the site
                     // from the OAuth provider pop-up
-                    this.loginError = 'Unable to login using this method at this time.';
+                    this.loginError = 'Internal login error. Try again later.';
                     break;
 
                 default:
@@ -504,12 +377,9 @@ export class AuthService implements OnDestroy {
 
         }
 
-        console.log('Cannot sign in via oAuth: ', this.loginError);
+        console.log('login failure: ', this.loginError);
 
-        // transition to public login page with login error message
-        // this.$state.go('site.public.login', { loginError: err, email: email });
-        this.router.navigate(['/login']);
-
+        return this.loginError;
     }
 
     private loginRedirect() {

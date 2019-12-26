@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth.service';
 
 export class AuthRedirectCookie {
 
-    cookieName = 'wwAuthRedirect';
+    cookieName = 'authRedirect';
 
     check(documentService: DocumentService) {
 

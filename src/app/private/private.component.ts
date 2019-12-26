@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-private',
@@ -33,7 +34,8 @@ export class PrivateComponent implements OnInit {
   activeMediaQuery: any;
 
   constructor(
-    public mediaObserver: MediaObserver
+    public mediaObserver: MediaObserver,
+    public authService: AuthService
   ) {
 
 

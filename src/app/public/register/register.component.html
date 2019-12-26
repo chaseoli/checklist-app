@@ -1,22 +1,60 @@
-<div fxFlex fxLayout="column" fxLayoutAlign="center center">
-    <div fxFlex></div>
-    <div fxLayout="column" fxLayoutGap="20px">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)" fxFlex fxLayout="column"
+  fxLayoutAlign="center center">
 
-        <div class="bx--form-item">
-            <label for="email" class="bx--label">Email</label>
-            <input id="email" type="text" class="bx--text-input" placeholder="you@company.com">
-        </div>
+  <div fxFlex></div>
 
+  <div style="min-width: 300px;" fxLayout="column" fxLayoutGap="40px">
 
-        <div class="bx--form-item">
-            <label for="password" class="bx--label">Password</label>
-            <input id="password" type="password" class="bx--text-input" placeholder="Password">
-        </div>
+    <p class="productive-heading-05">Sign up for xlear list</p>
 
-        <div class="bx--form-item">
-            <button class="bx--btn bx--btn--primary" type="button">Submit</button>
-        </div>
+    <div fxLayout="column" fxLayoutGap="20px" *ngIf="!showPasswordBlock; else passwordBlock">
+
+      <div class="bx--form-item" fxLayout="column">
+        <label for="email" class="bx--label">
+          Email
+        </label>
+        <input formControlName="email" id="email" type="text" class="bx--text-input" placeholder="you@company.com">
+      </div>
+
+      <div class="bx--form-item">
+        <button class="bx--btn bx--btn--primary" type="button"
+          (click)="showPasswordBlock = !showPasswordBlock">Continue</button>
+      </div>
 
     </div>
-    <div fxFlex></div>
-</div>
+
+    <ng-template #passwordBlock>
+
+      <div fxLayout="column" fxLayoutGap="20px">
+
+        <div class="bx--form-item">
+          <label for="password" class="bx--label">Password</label>
+          <input formControlName="password" id="password" type="password" class="bx--text-input" placeholder="Password">
+        </div>
+
+        <div class="bx--form-item">
+          <a href="#" ibmLink>forgot password?</a>
+        </div>
+
+        <div class="bx--form-item" *ngIf="!registerAttemptInProgress; else registerAttemptBlock">
+          <button class="bx--btn bx--btn--primary" type="button" type="submit">Sign up</button>
+        </div>
+
+        <ng-template #registerAttemptBlock>
+          <ibm-loading size="sm"></ibm-loading>
+        </ng-template>
+
+      </div>
+
+    </ng-template>
+
+    <div *ngIf="registerErrorNotification">
+      <ibm-notification [notificationObj]="registerErrorNotification">
+      </ibm-notification>
+    </div>
+
+  </div>
+
+  <div fxFlex></div>
+
+</form>

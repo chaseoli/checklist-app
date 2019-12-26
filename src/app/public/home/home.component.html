@@ -7,7 +7,7 @@
 
     <p class="productive-heading-05">Log in to xlear list</p>
 
-    <div fxLayout="column" fxLayoutGap="20px" *ngIf="!email && !showPasswordBlock; else passwordBlock">
+    <div fxLayout="column" fxLayoutGap="20px" *ngIf="!showPasswordBlock; else passwordBlock">
 
       <div class="bx--form-item" fxLayout="column">
         <label for="email" class="bx--label">
@@ -16,8 +16,15 @@
         <input formControlName="email" id="email" type="text" class="bx--text-input" placeholder="you@company.com">
       </div>
 
+      <fieldset class="bx--fieldset">
+        <ibm-checkbox (change)="onRememberMe($event)">
+          Remember Me
+        </ibm-checkbox>
+      </fieldset>
+
       <div class="bx--form-item">
-        <button class="bx--btn bx--btn--primary" type="button" (click)="showPasswordBlock = !showPasswordBlock">Continue</button>
+        <button class="bx--btn bx--btn--primary" type="button"
+          (click)="showPasswordBlock = !showPasswordBlock">Continue</button>
       </div>
 
     </div>
@@ -35,13 +42,27 @@
           <a href="#" ibmLink>forgot password?</a>
         </div>
 
-        <div class="bx--form-item">
+        <div class="bx--form-item" *ngIf="!loginAttemptInProgress; else loginAttemptBlock">
           <button class="bx--btn bx--btn--primary" type="button" type="submit">Log in</button>
         </div>
+
+        <ng-template #loginAttemptBlock>
+          <ibm-loading size="sm"></ibm-loading>
+        </ng-template>
 
       </div>
 
     </ng-template>
+
+    <div *ngIf="loginErrorNotification">
+      <ibm-notification [notificationObj]="loginErrorNotification">
+      </ibm-notification>
+    </div>
+
+    <div fxLayout="column">
+      <span class="helper-text-01">Don't have an account?</span>
+      <a [routerLink]="[ '/register']" ibmLink>Create an account</a>
+    </div>
 
   </div>
 

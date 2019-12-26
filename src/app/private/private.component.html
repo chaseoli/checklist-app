@@ -1,7 +1,7 @@
 <ibm-header [brand]="brand" [name]="name">
   <ibm-hamburger *ngIf="hasHamburger"></ibm-hamburger>
   <ibm-header-navigation>
-    <!-- <ibm-header-item>Button</ibm-header-item> -->
+    <ibm-header-item>Button</ibm-header-item>
   </ibm-header-navigation>
   <ibm-header-global>
     <ibm-header-action (click)="toggleTerminal()">
@@ -13,6 +13,10 @@
       </svg>
     </ibm-header-action>
   </ibm-header-global>
+  <ibm-header-navigation>
+  <ibm-header-item>{{authService.auth.auth.currentUser.email}}</ibm-header-item>
+  </ibm-header-navigation>
+
 </ibm-header>
 
 <ibm-sidenav>
@@ -47,13 +51,13 @@
 </ibm-sidenav>
 
 <div fxLayout="row" fxLayoutAlign="start stretch">
- 
+
   <div class="left-nav-spacer"></div>
- 
-  <div fxFlex fxLayout="column" fxLayoutAlign="start stretch" >
+
+  <div fxFlex fxLayout="column" fxLayoutAlign="start stretch">
 
     <div class="top-nav-spacer"></div>
-    
+
     <router-outlet></router-outlet>
 
     <span fxFlex></span>

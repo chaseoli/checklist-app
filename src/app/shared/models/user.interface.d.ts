@@ -4,7 +4,7 @@ export interface IUserMeta {
     // firebase rules on /profile and lock off other writable nodes 
     // about a user inline with profile, like duplicating permissions
     profile: {
-        email: string;
+        // email: string; // use firebase.auth.currentUser instead of duplicating email
     };
 
     permissions: IPermissions
