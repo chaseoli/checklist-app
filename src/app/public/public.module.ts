@@ -8,11 +8,11 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { PublicComponent } from './public.component';
 import { CustomCarbonModule } from '../shared/custom-carbon-angular.module';
 import { InactiveComponent } from './inactive/inactive.component';
-import { RegisterComponent } from './register/register.component';
+import { RegisterComponent } from './auth/register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoginComponent } from './login/login.component';
-import { PwResetComponent } from './pw-reset/pw-reset.component';
-import { RecoverComponent } from './recover/recover.component';
+import { LoginComponent } from './auth/login/login.component';
+import { ResetComponent } from './auth/reset/reset.component';
+import { RecoverComponent } from './auth/recover/recover.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { RecoverComponent } from './recover/recover.component';
     InactiveComponent, 
     RegisterComponent,
     LoginComponent,
-    PwResetComponent,
+    ResetComponent,
     RecoverComponent
   ],
   imports: [

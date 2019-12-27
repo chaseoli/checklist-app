@@ -1,1 +1,36 @@
-<p>recover works!</p>
+<form [formGroup]="recoverForm" (ngSubmit)="onSubmit(recoverForm.value)" fxFlex fxLayout="column"
+  fxLayoutAlign="center center">
+
+  <div fxFlex></div>
+
+  <div style="min-width: 300px;" fxLayout="column" fxLayoutGap="40px">
+
+    <p class="productive-heading-05">Reset your password</p>
+
+      <div fxLayout="column" fxLayoutGap="20px">
+
+        <div class="bx--form-item">
+          <label for="password" class="bx--label">Password</label>
+          <input formControlName="password" id="password" type="password" class="bx--text-input" placeholder="Password">
+        </div>
+
+        <div class="bx--form-item" *ngIf="!recoverAttemptInProgress; else recoverAttemptBlock">
+          <button class="bx--btn bx--btn--primary" type="button" type="submit">Update</button>
+        </div>
+
+        <ng-template #recoverAttemptBlock>
+          <ibm-loading size="sm"></ibm-loading>
+        </ng-template>
+
+      </div>
+
+    <div *ngIf="notification">
+      <ibm-notification [notificationObj]="notification">
+      </ibm-notification>
+    </div>
+
+  </div>
+
+  <div fxFlex></div>
+
+</form>

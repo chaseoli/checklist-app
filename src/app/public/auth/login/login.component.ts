@@ -1,9 +1,8 @@
 import { Component, OnInit, HostBinding, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { get, isEmpty } from 'lodash';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IUserMeta } from '../../shared/models/user.interface'
 
 interface ILoginForm {
   email: string
