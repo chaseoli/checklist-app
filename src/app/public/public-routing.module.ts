@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './auth/login/login.component';
 import { DocsComponent } from './docs/docs.component';
 import { PublicComponent } from './public.component';
 import { InactiveComponent } from './inactive/inactive.component';
 import { AuthResolver } from '../shared/guards/auth.resolver';
-import { RegisterComponent } from './register/register.component';
-import { PwResetComponent } from './pw-reset/pw-reset.component';
-import { RecoverComponent } from './recover/recover.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { ResetComponent } from './auth/reset/reset.component';
+import { RecoverComponent } from './auth/recover/recover.component';
 
 const routes: Routes = [
   {
@@ -30,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'reset',
-        component: PwResetComponent,
+        component: ResetComponent,
       },
       {
         path: 'recover',

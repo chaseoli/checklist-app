@@ -2,7 +2,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { get, isEmpty } from 'lodash';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { Router } from '@angular/router';
 
 interface IResetForm {
@@ -11,11 +11,11 @@ interface IResetForm {
 }
 
 @Component({
-  selector: 'app-pw-reset',
-  templateUrl: './pw-reset.component.html',
-  styleUrls: ['./pw-reset.component.scss']
+  selector: 'app-reset',
+  templateUrl: './reset.component.html',
+  styleUrls: ['./reset.component.scss']
 })
-export class PwResetComponent implements OnInit {
+export class ResetComponent implements OnInit {
 
   public resetAttemptInProgress = false;
   public emailResetNotification: {
@@ -25,7 +25,6 @@ export class PwResetComponent implements OnInit {
     showClose: boolean
   };
   public resetForm: FormGroup;
-  private rememberMe: boolean;
 
   constructor(
     public authService: AuthService,
@@ -56,10 +55,8 @@ export class PwResetComponent implements OnInit {
 
     console.log('formData', formData);
 
-    this.authService.signInEmailPassword(formData.email, formData.password, this.rememberMe)
+    this.authService.auth.auth.sendPasswordResetEmail(formData.email)
       .then(() => {
-
-        this.redirect();
 
         this.resetForm.reset();
         this.resetAttemptInProgress = false;

@@ -171,36 +171,12 @@ export class AuthService implements OnDestroy {
     }
 
     /**
-     * Adds necessary headers for maker/checker requests
-     *
-     * @param {HttpHeaders} h
-     * @param {('request' | 'approve')} permission
-     * @param {string} [approvalId]
-     * @returns {HttpHeaders}
-     * @memberof AuthService
-     */
-    addMakerCheckerHeaders(
-        h: HttpHeaders,
-        permission: 'request' | 'approve',
-        approvalId?: string
-    ): HttpHeaders {
-        h = h.set('x-permission', permission);
-
-        if (permission === 'approve') {
-            h = h.set('x-request', approvalId);
-        }
-        return h;
-    }
-
-    /**
      * Used as middleware to do an action on sign-in and sign-out
      *
      * @private
      * @memberof AuthService
      */
     private watchUser() {
-
-        // const user$ = Observable.create((observer: Observer<UserInfo>) => {
 
         // watch logged in user
         this.auth.auth.onAuthStateChanged((user: UserInfo) => {
@@ -219,9 +195,6 @@ export class AuthService implements OnDestroy {
 
                 // The signed-in user info
                 console.log('Signed in: ', user.email);
-
-                // set user data on auth service
-                this.getUserMeta(this);
 
                 // tell angular about changes to detect
                 // this.ngZone.run(() => {
@@ -256,75 +229,6 @@ export class AuthService implements OnDestroy {
                 // clicks logout, instead of prompting the
                 // user to login every time the user navigates to any page
 
-            }
-
-        });
-
-        // });
-
-        // return user$;
-
-    }
-
-    /**
-     * Gets user profile including permissions if the user is logged in
-     *
-     * @param {AuthService} authService Needed for context in situations where context is lost due to async calls
-     * @returns {Promise<IUserMeta>}
-     * @memberof AuthService
-     */
-    getUserMeta(authService: AuthService): Promise<IUserMeta> {
-
-        return new Promise((resolve, reject) => {
-
-            // get user profile if there is a currently logged in user
-            if (!isEmpty(get(authService.auth, 'auth.currentUser'))) {
-
-                // check if the user already exists on authService
-                if (authService.userMeta) {
-                    // return current user
-                    resolve(authService.userMeta);
-                } else {
-
-                    if (this.profileRef) {
-                        // if the profile ref is not null then stop observing
-                        // because it will start re-watching below
-                        this.profileRef.off();
-                    }
-
-                    // get current user info from database
-                    this.profileRef = authService.db.database.ref(`/users/${authService.auth.auth.currentUser.uid}`);
-
-                    try {
-
-                        // watch for changes to profile (necessary for situations when a super admin revokes permissions
-                        // while the user is already logged-in, this will update the users profile to add or remove permissions
-                        // even while the user is logged in)
-                        this.profileRef.on('value', (userData: firebase.database.DataSnapshot) => {
-
-                            const userProfile: IUserMeta = userData.val();
-
-                            // set current user permissions
-                            authService.userMeta = userProfile;
-
-                            if (isDevMode) {
-                                console.log('User Permissions: ', authService.userMeta);
-                            }
-
-                            resolve(userProfile);
-
-                        });
-
-                    } catch (error) {
-                        console.log(error);
-                        resolve(null);
-                    }
-
-                }
-
-            } else {
-                // no logged in user so reject
-                resolve(null);
             }
 
         });
@@ -397,7 +301,7 @@ export class AuthService implements OnDestroy {
 
                 } else {
                     // if redirect query param is NOT present
-                    this.router.navigate(['/portal']);
+                    this.router.navigate(['/private']);
 
                 }
 
