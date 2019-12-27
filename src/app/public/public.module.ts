@@ -11,6 +11,8 @@ import { InactiveComponent } from './inactive/inactive.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
+import { PwResetComponent } from './pw-reset/pw-reset.component';
+import { RecoverComponent } from './recover/recover.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { LoginComponent } from './login/login.component';
     NotFoundComponent, 
     InactiveComponent, 
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    PwResetComponent,
+    RecoverComponent
   ],
   imports: [
     CommonModule,

@@ -7,6 +7,8 @@ import { PublicComponent } from './public.component';
 import { InactiveComponent } from './inactive/inactive.component';
 import { AuthResolver } from '../shared/guards/auth.resolver';
 import { RegisterComponent } from './register/register.component';
+import { PwResetComponent } from './pw-reset/pw-reset.component';
+import { RecoverComponent } from './recover/recover.component';
 
 const routes: Routes = [
   {
@@ -25,6 +27,14 @@ const routes: Routes = [
       {
         path: 'register',
         component: RegisterComponent,
+      },
+      {
+        path: 'reset',
+        component: PwResetComponent,
+      },
+      {
+        path: 'recover',
+        component: RecoverComponent,
       }
     ]
   },

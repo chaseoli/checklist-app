@@ -1,0 +1,34 @@
+<form [formGroup]="resetForm" (ngSubmit)="onSubmit(resetForm.value)" fxFlex fxLayout="column"
+  fxLayoutAlign="center center">
+
+  <div fxFlex></div>
+
+  <div style="min-width: 300px;" fxLayout="column" fxLayoutGap="40px">
+
+    <p class="productive-heading-05">Sent password reset email</p>
+
+    <div fxLayout="column" fxLayoutGap="20px">
+
+      <div class="bx--form-item" fxLayout="column">
+        <label for="email" class="bx--label">
+          Email
+        </label>
+        <input formControlName="email" id="email" type="text" class="bx--text-input" placeholder="you@company.com">
+      </div>
+
+      <div class="bx--form-item">
+        <button class="bx--btn bx--btn--primary" type="button" type="submit">Send</button>
+      </div>
+
+    </div>
+
+    <div *ngIf="emailResetNotification">
+      <ibm-notification [notificationObj]="emailResetNotification">
+      </ibm-notification>
+    </div>
+
+  </div>
+
+  <div fxFlex></div>
+
+</form>
