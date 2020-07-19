@@ -35,7 +35,7 @@
     "carbon-icons": "^7.0.7",
     "core-js": "^2.5.4",
     "firebase": "^6.6.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "rxjs": "~6.5.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
